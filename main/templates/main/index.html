@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'main/css/index.css' %}">
+{% endblock %}
+{% block title %}
+Home
+{% endblock %}
+{% block content %}
+<main>
+    <div class="container my-3">
+        <div class="alert alert-danger text-center" role="alert">
+            If this page is empty click this button to restore database.
+            <p class="m-0">
+                <a href="{% url 'restore_db' %}" class="btn btn-success btn-md">Restore</a>
+            </p>
+            This might take a minute.
+        </div>
+        {% departments_preview %}
+    </div>
+</main>
+{% endblock %}

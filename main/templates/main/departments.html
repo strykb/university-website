@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Departments
+{% endblock %}
+
+{% block content %}
+<div class="container-md p-3">
+    {% if user.is_authenticated and user.is_technician %}
+        <div class="d-flex flex-row-reverse">
+            <a href="{% url 'add_department' %}"class="btn btn-success btn-md mb-3">Add department</i></a>
+        </div>
+    {% endif %}
+    {% if not departments %}
+    <div class="alert alert-warning w-100 text-center" role="alert">There are no departments at the moment.</div>
+    {% else %}
+        {% for department in departments %}
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                <a class="h2 text-dark" href="{% url 'department' department.slug %}">{{ department.name|title }}</a>
+                <p class="lead">{{ department.description }}</p>
+                <hr class="my-2">
+                <p>Courses:</p>
+                <ul class="list-group">
+                {% for course in department.courses.all|slice:':3' %}
+                    <li class="list-group-item list-group-item-action">
+                        <a class="text-dark" href="{% url 'course' course.slug %}">{{ course.name|title }}</a>
+                    </li>
+                {% empty %}
+                    <div class="alert alert-warning" role="alert">There are no courses at the moment.</div>
+                {% endfor%}
+                </ul>
+                <a class="btn btn-secondary btn-md mt-4"href="{% url 'department' department.slug %}">Find out more</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

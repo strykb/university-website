@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} 
+Create Course
+{% endblock %}
+{% block content %}
+<div class="container-md my-3">
+    {% if user.is_technician %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" class="btn btn-md btn-dark" value="Save">
+        </form>
+    {% else %}
+       <div class="alert alert-danger text-center" role="alert">
+            You're not allowed in here. Go back to the 
+            <a href="{% url 'index' %}">home page</a>
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% load static %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    {% block css_files %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark elegant-color-dark main-navbar">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+    aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="basicExampleNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item mr-lg-2"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+            {% navbar_items %}
+            {% if user.is_authenticated and user.is_technician %}
+                <li class="nav-item dropdown mr-lg-2">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Users</a>
+                    <div class="dropdown-menu elegant-color-dark" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item text-white" href="{% url 'tutors_list' %}">Tutors</a>
+                        <a class="dropdown-item text-white" href="{% url 'students_list' %}">Students</a>
+                        <a class="dropdown-item text-white" href="{% url 'technicians_list' %}">Technicians</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-white" href="{% url 'pending_users' %}">Pending Users</a>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+                <li class="nav-item text-white my-auto">ID: {{ request.user.id }} | {{ request.user.first_name }} {{ request.user.last_name }}</li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log Out</a></li>
+            {% else %}
+                <li class="nav-item mr-lg-2"><a class="nav-link" href="{% url 'login' %}">Log In</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+    {% block content %}{% endblock %}
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    {% block js_files %}{% endblock %}
+</body>
+</html>

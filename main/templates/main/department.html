@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ department.name|title }}
+{% endblock %}
+
+{% block content %}
+<div class="container-md p-3">
+    <div class="jumbotron pb-2 jumbotron-fluid">
+        <div class="container">
+        <h2 class="h2 text-dark">{{ department.name|title }}</h2>
+        <p class="lead">{{ department.description }}</p>
+        <hr class="my-2">
+        <p>Courses:</p>
+        <ul class="list-group">
+        {% for course in department.courses.all %}
+            <li class="list-group-item list-group-item-action">
+                <a class="text-dark" href="{% url 'course' course.slug %}">{{ course.name|title }}</a>
+            </li>
+        {% empty %}
+        <div class="alert alert-warning" role="alert">There are no courses at the moment.</div>
+        {% endfor%}
+        </ul>
+        {% if user.is_authenticated and user.is_technician %}
+            <div class="d-flex mt-1 flex-row-reverse">
+                <a href="{% url 'add_course' department.slug %}" class="btn btn-success btn-md mb-3">Add course</i></a>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+    {% if user.is_authenticated and user.is_technician %}
+        <div class="d-flex flex-row-reverse">
+            <a href="{% url 'delete_department' department.slug %}" class="btn btn-danger btn-md mb-3">Delete</i></a>
+            <a href="{% url 'edit_department' department.slug %}" class="btn btn-info btn-md mb-3">Edit</i></a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

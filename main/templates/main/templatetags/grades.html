@@ -1,0 +1,7 @@
+{% for grade in grades %}
+    {% if forloop.last %}
+        <a href="{% url 'edit_grade' grade.id %}" class="text-white p-3">{{ grade.value }}%</a>
+    {% else %}
+        <a href="{% url 'edit_grade' grade.id %}" class="border-right text-white p-3">{{ grade.value }}%</a>
+    {% endif %}
+{% endfor %}

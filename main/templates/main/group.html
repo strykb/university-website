@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ group.name }}
+{% endblock %}
+
+{% block content %}
+<div class="container-md p-3">
+    {% if user.is_technician or user.is_tutor %}
+        <div class="jumbotron pb-2 jumbotron-fluid">
+            <div class="container">
+            <h2 class="h2 text-dark text-center">{{ group.name|title }}</h2>
+            <div class="row">
+                <div class="col-6">
+                    <p class="lead">Course: {{ group.course.name }}</p>
+                </div>
+                <div class="col-6">
+                    <p class="lead text-right">Students: {{ group.students.all|length}}</p>
+                </div>
+            </div>
+            {% if not group.students.all%}
+                <div class="alert alert-warning" role="alert">No one belongs to this group.</div>
+            {% else %}
+                <table class="table table-striped table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in group.students.all %}
+                            <tr>
+                                <td>{{ student.id }}</td>
+                                <td>{{ student.first_name }}</td>
+                                <td>{{ student.last_name }}</td>
+                                <td>{{ student.email }}</td>
+                            </tr>
+                        {% endfor%}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="alert alert-danger text-center" role="alert">
+            You're not allowed in here. Go back to the 
+            <a href="{% url 'index' %}">home page</a>
+        </div>
+    {% endif %}
+    {% if user.is_technician %}
+        <div class="d-flex flex-row-reverse">
+            <a href="{% url 'delete_group' group.id %}" class="btn btn-danger btn-md mb-3">Delete</i></a>
+            <a href="{% url 'edit_group' group.id %}" class="btn btn-info btn-md mb-3">Edit</i></a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

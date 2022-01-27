@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container-lg my-3">
+        <div class="row my-2">
+            <div class="col-4">
+                <div class="alert alert-success text-center" role="alert">
+                    <p>Technician</p>
+                    <p>Email: tech@example.com</p>
+                    <p>Password: 123</p>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="alert alert-success text-center" role="alert">
+                    <p>Tutor</p>
+                    <p>Email: tutor@example.com</p>
+                    <p>Password: 123</p>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="alert alert-success text-center" role="alert">
+                    <p>Student</p>
+                    <p>Email: student@example.com</p>
+                    <p>Password: 123</p>
+                </div>
+            </div>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input class="btn btn-dark" type="submit" value="Log in">
+        </form>
+    </div>
+{% endblock %}

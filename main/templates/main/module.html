@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block title %}
+{{ module.name }}
+{% endblock %}
+
+{% block content %}
+<div class="container-md p-3">
+    {% if user.is_technician or user.is_tutor or user|on_module:module %}
+        <div class="jumbotron pb-2 jumbotron-fluid">
+            <div class="container">
+                <h2 class="h2 text-dark">{{ module.name|title }}</h2>
+                <p class="lead">Course: {{ module.course.name }}</p>
+                <hr class="my-2">
+                <p>Tutors:</p>
+                <ul class="list-group">
+                    {% for tutor in module.tutors.all %}
+                            <li class="list-group-item">
+                                <p class="text-dark m-0">{{ tutor.first_name|title }} {{ tutor.last_name }}</p>
+                            </li>
+                    {% empty %}
+                        <div class="alert alert-warning" role="alert">There are no tutors at the moment.</div>
+                    {% endfor%}
+                </ul>
+                {% if not user.is_technician %}
+                    <p>Exams:</p>
+                    <ul class="list-group">
+                        {% for exam in module.exams.all %}
+                                <li class="list-group-item">
+                                    {% if user == exam.tutor or exam.group in user.groups.all %}
+                                    <a class="text-dark m-0" href="{% url 'exam' exam.id %}">{{ exam.name|title }}, {{ exam.date }}</a>
+                                    {% else %}
+                                    <p class="text-dark m-0">{{ exam.name|title }}, {{ exam.date }}</p>
+                                    {% endif %}
+                                </li>
+                        {% empty %}
+                            <div class="alert alert-warning" role="alert">There are no exams at the moment.</div>
+                        {% endfor%}
+                    </ul>
+                {% endif %}
+                {% if user in module.tutors.all %}
+                    <div class="d-flex mt-1 flex-row-reverse">
+                        <a href="{% url 'add_exam' module.id %}" class="btn btn-success btn-md mb-3">Add exam</i></a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-danger text-center" role="alert">
+            You're not allowed in here. Go back to the 
+            <a href="{% url 'index' %}">home page</a>
+        </div>
+    {% endif %}
+    {% if user.is_technician %}
+        <div class="d-flex flex-row-reverse">
+            <a href="{% url 'delete_module' module.id %}" class="btn btn-danger btn-md mb-3">Delete</i></a>
+            <a href="{% url 'edit_module' module.id %}" class="btn btn-info btn-md mb-3">Edit</i></a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

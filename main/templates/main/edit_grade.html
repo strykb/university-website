@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Edit Grade
+{% endblock %}
+{% block content %}
+<div class="container-md my-3">
+    {% if user == grade.exam.tutor %}
+        <div class="row">
+            <div class="col-6">
+                <p class="lead">{{ grade.student.first_name }} {{ grade.student.last_name }}</p>
+            </div>
+            <div class="col-6">
+                <p class="lead text-right">ID: {{ grade.student.id }}</p>
+            </div>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" class="btn btn-md btn-dark" value="Save">
+        </form>
+        <div class="d-flex mt-1 flex-row-reverse">
+            <a href="{% url 'delete_grade' grade.id %}" class="btn btn-danger btn-md mb-3">Delete</i></a>
+            <a href="{% url 'exam' grade.exam.id %}" class="btn btn-warning btn-md mb-3">Cancel</i></a>
+        </div>
+    {% else %}
+       <div class="alert alert-danger text-center" role="alert">
+            You're not allowed in here. Go back to the 
+            <a href="{% url 'index' %}">home page</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+{% block js_files %}
+<script src="{% static 'main/js/edit_grade.js' %}"></script>
+{% endblock %}

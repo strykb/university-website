@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+{% block title %}
+{{ course.name }}
+{% endblock %}
+
+{% block content %}
+<div class="container-md p-3">
+    <div class="jumbotron pb-2 jumbotron-fluid">
+        <div class="container">
+        <h2 class="h2 text-dark">{{ course.name|title }}</h2>
+        <p class="lead">{{ course.description }}</p>
+        {% if user.is_authenticated and user.is_student and not user.is_technician and not user.is_tutor %}
+            {% modules_list %}
+        {% endif %}
+        {% if user.is_authenticated and user.is_technician or user.is_tutor %}
+        <p>Modules:</p>
+            <ul class="list-group">
+            {% for module in course.modules.all %}
+                <li class="list-group-item list-group-item-action">
+                    <a class="text-dark" href="{% url 'module' module.id %}">{{ module.name|title }}</a>
+                </li>
+            {% empty %}
+            <div class="alert alert-warning" role="alert">There are no modules at the moment.</div>
+            {% endfor%}
+            </ul>
+            {% if user.is_technician %}
+                <div class="d-flex mt-1 flex-row-reverse">
+                    <a href="{% url 'add_module' course.slug %}" class="btn btn-success btn-md mb-3">Add module</i></a>
+                </div>
+            {% endif %}
+            <p>Groups:</p>
+            <ul class="list-group">
+            {% for group in course.groups.all %}
+                <li class="list-group-item list-group-item-action">
+                    <a class="text-dark" href="{% url 'group' group.id %}">{{ group.name|title }}</a>
+                </li>
+            {% empty %}
+            <div class="alert alert-warning" role="alert">There are no groups at the moment.</div>
+            {% endfor%}
+            </ul>
+            {% if user.is_technician %}
+                <div class="d-flex mt-1 flex-row-reverse">
+                    <a href="{% url 'add_group' course.slug %}" class="btn btn-success btn-md mb-3">Add group</i></a>
+                </div>
+            {% endif %}
+        {% endif %}
+        </div>
+    </div>
+    {% if user.is_authenticated and user.is_technician %}
+        <div class="d-flex flex-row-reverse">
+            <a href="{% url 'delete_course' course.slug %}" class="btn btn-danger btn-md mb-3">Delete</i></a>
+            <a href="{% url 'edit_course' course.slug %}" class="btn btn-info btn-md mb-3">Edit</i></a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

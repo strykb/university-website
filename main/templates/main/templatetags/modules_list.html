@@ -1,0 +1,17 @@
+<hr class="my-2">
+<p>Modules:</p>
+<ul class="list-group">
+    {% for module in modules %}
+        {% if on_course %}
+            <li class="list-group-item list-group-item-action">
+                <a class="text-dark" href="{% url 'module' module.id %}">{{ module.name|title }}</a>
+            </li>
+        {% else %}
+            <li class="list-group-item">
+                <p class="text-dark m-0">{{ module.name|title }}</p>
+            </li>
+        {% endif %}
+    {% empty %}
+        <div class="alert alert-warning" role="alert">There are no modules at the moment.</div>
+    {% endfor%}
+</ul>

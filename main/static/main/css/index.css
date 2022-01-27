@@ -1,0 +1,11 @@
+header {
+    background-image: url('../img/library.jpg');
+    background-position: center bottom;
+    background-size: cover;
+}
+
+h1 span {
+    background-color: rgba(0, 0, 0, 0.5);
+    font-size: 2.5rem;
+    font-weight: bold;
+}

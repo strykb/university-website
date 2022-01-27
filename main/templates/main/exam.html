@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block title %}
+{{ exam.name }}
+{% endblock %}
+
+{% block content %}
+<div class="container-md p-3">
+    {% if user == exam.tutor %}
+        <div class="jumbotron pb-2 jumbotron-fluid">
+            <div class="container">
+                <h2 class="h2 text-dark text-center">{{ exam.name|title }}</h2>
+                <div class="row">
+                    <div class="col-6">
+                        <p class="lead">Course: {{ exam.module.course.name }}</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="lead text-right">Module: {{ exam.module.name }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <p class="lead">Group: {{ exam.group.name }}</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="lead text-right">Tutor: {{ exam.tutor.first_name }} {{ exam.tutor.last_name }}</p>
+                    </div>
+                </div>
+            <hr class="my-2">
+            <table class="table table-bordered table-dark table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Grades</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for student in exam.group.students.all %}
+                        <tr>
+                            <th scope="row">{{ student.id }}</th>
+                            <td>{{ student.first_name }}</td>
+                            <td>{{ student.last_name }}</td>
+                            <td>{{ student.email }}</td>
+                            <td>
+                                {% grades %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="d-flex flex-row-reverse">
+                <a href="{% url 'add_grade' exam.id %}" class="btn btn-success btn-md mb-3">Add Grade</i></a>
+            </div>
+        </div>
+    {% elif user in exam.group.students.all  %}
+        <div class="jumbotron pb-2 jumbotron-fluid">
+            <div class="container">
+                <h2 class="h2 text-dark text-center">{{ exam.name|title }}</h2>
+                <div class="row">
+                    <div class="col-6">
+                        <p class="lead">Course: {{ exam.module.course.name }}</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="lead text-right">Module: {{ exam.module.name }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <p class="lead">Group: {{ exam.group.name }}</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="lead text-right">Tutor: {{ exam.tutor.first_name }} {{ exam.tutor.last_name }}</p>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-6">
+                        <p class="lead text-center p-3">
+                            Grades:
+                            {% for grade in user.grades.all%}
+                                {% if grade.exam == exam %}
+                                    {% if  not forloop.last %}
+                                        <span class="border-right border-dark p-3">{{ grade.value }}%</span>
+                                    {% else %}
+                                        <span class="p-3">{{ grade.value }}%</spab>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-danger text-center" role="alert">
+            You're not allowed in here. Go back to the 
+            <a href="{% url 'index' %}">home page</a>
+        </div>
+    {% endif %}
+</div>
+{% if user == exam.tutor %}
+    <div class="d-flex flex-row-reverse">
+        <a href="{% url 'delete_exam' exam.id %}" class="btn btn-danger btn-md mb-3">Delete</i></a>
+        <a href="{% url 'edit_exam' exam.id %}" class="btn btn-info btn-md mb-3">Edit</i></a>
+    </div>
+{% endif %}
+{% endblock %}

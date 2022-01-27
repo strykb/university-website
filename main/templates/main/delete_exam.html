@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}
+Delete Exam
+{% endblock %}
+
+{% block content %}
+{% if user.is_tutor %}
+<form method='POST'>
+    {% csrf_token %}
+    <p>{{ exam.name }}</p>
+    <p>Are you sure, you want to delete this exam?</p>
+    <button type='submit'>Yes</button>
+    <a href="{% url 'exam' exam.pk %}">No</a>
+</form>
+{% endif %}
+{% endblock %}
