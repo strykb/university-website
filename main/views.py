@@ -14,7 +14,7 @@ from accounts.models import Account
 def restore_db(request):
     # for demonstration purposes
     # restores the database
-    call_command('loaddata', 'backup.json')
+    call_command('loaddata', 'home/bartek/university/backup.json')
     return redirect('index')
 
 class IndexView(TemplateView):

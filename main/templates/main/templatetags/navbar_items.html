@@ -1,19 +1,10 @@
-<li class="nav-item dropdown multi-level-dropdown mr-lg-2">
-    <a href="#" id="menu" data-toggle="dropdown" class="nav-link dropdown-toggle w-100">Departments</a>
-    <ul class="dropdown-menu mt-2 rounded-0 elegant-color-dark border-0 z-depth-1">
-        <li class="dropdown-item p-0"><a class="text-white w-100" href="{% url 'departments' %}">All departments</a></li>
+<li class="nav-item dropdown mr-lg-2">
+    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Departments</a>
+    <div class="dropdown-menu elegant-color-dark" aria-labelledby="navbarDropdownMenuLink">
+        <a class="dropdown-item text-white" href="{% url 'departments' %}">All departments</a>
         <div class="dropdown-divider m-0"></div>
         {% for department in departments %}
-        <li class="dropdown-item dropdown-submenu p-0">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle text-white w-100">{{ department.name }}</a>
-            <ul class="dropdown-menu ml-2 rounded-0 elegant-color-dark border-0 z-depth-1">
-                <li class="dropdown-item p-0"><a href="{% url 'department' department.slug %}" class="text-white w-100">{{ department.name }}</a></li>
-                <div class="dropdown-divider m-0"></div>
-                {% for course in department.courses.all %}
-                        <li class="dropdown-item p-0"><a href="{% url 'course' course.slug %}" class="text-white w-100">{{ course.name }}</a></li>
-                {% endfor %}                
-            </ul>
-        </li>
+        <a class="dropdown-item text-white" href="{% url 'department' department.slug %}">{{ department.name }}</a>
         {% endfor %}
-    </ul>
+    </div>
 </li>
