@@ -20,34 +20,38 @@
                     <button class="btn btn-success btn-md mx-3" type="submit">Search</button>
                     <input class="form-control" type="search" name="search"> 
                 </form>
-                <table class="table table-bordered table-dark table-sm table-hover">
-                    <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">First Name</th>
-                        <th scope="col">Last Name</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {% for member in members %}
-                            {% if not member == user %}
-                                <tr>
-                                    <th scope="row" class="align-middle">{{ member.id }}</th>
-                                    <td class="align-middle">{{ member.first_name }}</td>
-                                    <td class="align-middle">{{ member.last_name }}</td>
-                                    <td class="d-flex flex-row-reverse align-middle">
-                                        {% url 'pending_users' as pending_users %}
-                                        {% if request.path == pending_users %}
-                                            <a href="{% url 'approve_student' member.id %}" class="btn btn-success btn-md mx-3">Approve</a>
-                                        {% endif %}
-                                        <a href="{% url 'edit_user' member.id %}" class="btn btn-secondary btn-md mx-3">Manage</a>
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-dark table-sm table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th>Email</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for member in members %}
+                                {% if not member == user %}
+                                    <tr>
+                                        <th scope="row" class="align-middle">{{ member.id }}</th>
+                                        <td class="align-middle">{{ member.first_name }}</td>
+                                        <td class="align-middle">{{ member.last_name }}</td>
+                                        <td class="align-middle">{{ member.email }}</td>
+                                        <td class="d-flex flex-row-reverse align-middle">
+                                            {% url 'pending_users' as pending_users %}
+                                            {% if request.path == pending_users %}
+                                                <a href="{% url 'approve_student' member.id %}" class="btn btn-success btn-md mx-3">Approve</a>
+                                            {% endif %}
+                                            <a href="{% url 'edit_user' member.id %}" class="btn btn-secondary btn-md mx-3">Manage</a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
                 <ul class="pagination justify-content-center">
                     {% if page_obj.has_previous %}
                         <li class="page-item">

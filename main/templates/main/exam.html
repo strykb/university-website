@@ -27,30 +27,32 @@
                     </div>
                 </div>
             <hr class="my-2">
-            <table class="table table-bordered table-dark table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Grades</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    {% for student in exam.group.students.all %}
-                        <tr>
-                            <th scope="row">{{ student.id }}</th>
-                            <td>{{ student.first_name }}</td>
-                            <td>{{ student.last_name }}</td>
-                            <td>{{ student.email }}</td>
-                            <td>
-                                {% grades %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-bordered table-dark table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Grades</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in exam.group.students.all %}
+                            <tr>
+                                <th scope="row">{{ student.id }}</th>
+                                <td>{{ student.first_name }}</td>
+                                <td>{{ student.last_name }}</td>
+                                <td>{{ student.email }}</td>
+                                <td class="text-nowrap">
+                                    {% grades %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             <div class="d-flex flex-row-reverse">
                 <a href="{% url 'add_grade' exam.id %}" class="btn btn-success btn-md mb-3">Add Grade</i></a>
             </div>
